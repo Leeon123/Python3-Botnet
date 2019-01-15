@@ -7,7 +7,7 @@ Build up a easy P2P botnet with python3.
 **CC-Flood(http-flood), TCP-Flood, UDP Flood**
 
 ## Requirement
-***Only python3 :)***
+***Only need python3 :)***
 
 ## Usage:
 ***Edit*** the cnc server ip and port into the bot.py **at first**.
