@@ -10,7 +10,7 @@ Build up a easy P2P botnet with python3.
 ***Only python3 :)***
 
 ## Usage:
-Edit the cnc server ip and port into the bot.py **at first**.
+***Edit*** the cnc server ip and port into the bot.py **at first**.
 
 Then, run the cnc.py:
 
