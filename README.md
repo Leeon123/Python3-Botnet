@@ -14,6 +14,6 @@ Build up a easy P2P botnet with python3.
 
 Then, run the cnc.py:
 
-    python3 cnc.py
+    python3 cnc.py <port>
     
 At Last, run the bot.py in any python3 environment(IDE, codeanywhere,etc.) then the **Bot** is online.
