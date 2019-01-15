@@ -3,7 +3,10 @@
 
 Build up a easy P2P botnet with python3.
 
+***Youtube Video: https://youtu.be/3_JnAXVtFNs***
+
 ## Function
+
 **CC-Flood(http-flood), TCP-Flood, UDP Flood**
 
 ## Requirement
