@@ -1,4 +1,4 @@
-# Python3-Botnet
+# Python3-Botnet ![](https://img.shields.io/badge/Version-1.0-brightgreen.svg)  ![](https://img.shields.io/badge/license-GPL3.0-blue.svg)
 **Use Python3 to setup a botnet (include bot and c&amp;c)**
 
 Build up a easy P2P botnet with python3.
