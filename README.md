@@ -1,14 +1,22 @@
 # Python3-Botnet ![](https://img.shields.io/badge/Version-1.0-brightgreen.svg)  ![](https://img.shields.io/badge/license-GPL3.0-blue.svg)
-**Use Python3 to setup a botnet (include bot and c&amp;c)**
+**Use Python3 to build a botnet (include bot and c&amp;c)**
 
 Build up a easy P2P botnet with python3.
 
 ***Youtube Video: https://youtu.be/3_JnAXVtFNs***
 
-## Function
+## C&C Features
 
-**CC-Flood(http-flood), TCP-Flood, UDP Flood**
+**TCP Keep-Alive Connection**
 
+**Simple C&C**
+## Bot Features
+
+**Three attack mode**
+
+*-CC(Http-flood) -TCP Connection FLood -UDP Flood*
+
+**Keep-Alive connection**
 ## Requirement
 ***Only need python3 :)***
 
