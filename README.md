@@ -3,7 +3,9 @@
 
 Build up a easy P2P botnet with python3.
 
-***Youtube Video: https://youtu.be/3_JnAXVtFNs***
+***Youtube Video: https://youtu.be/3_JnAXVtFNs (outdated)***
+
+I will upload xor version and new tut video as fast as i can :)
 
 ## C&C Features
 
