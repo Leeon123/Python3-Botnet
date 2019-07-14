@@ -1,4 +1,4 @@
-# Python3-Botnet ![](https://img.shields.io/badge/Version-1.0-brightgreen.svg)  ![](https://img.shields.io/badge/license-GPL3.0-blue.svg)
+# Python3-Botnet ![](https://img.shields.io/badge/Version-1.2-brightgreen.svg)  ![](https://img.shields.io/badge/license-GPL3.0-blue.svg)
 **Use Python3 to build a botnet (include bot and c&amp;c)**
 
 Build up a easy P2P botnet with python3.
@@ -14,7 +14,7 @@ Build up a easy P2P botnet with python3.
 
 **Three attack mode**
 
-*-CC(Http-flood) -TCP Connection FLood -UDP Flood*
+*-Http-flood -TCP Connection FLood -UDP Flood*
 
 **Keep-Alive connection**
 ## Requirement
@@ -23,7 +23,7 @@ Build up a easy P2P botnet with python3.
 ## Usage:
 ***Edit*** the cnc server ip and port into the bot.py **at first**.
 
-Then, run the cnc.py:
+Then, edit the password of cnc.py and run the cnc.py:
 
     python3 cnc.py <port>
     
