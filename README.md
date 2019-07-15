@@ -1,5 +1,7 @@
-# Python3-Botnet ![](https://img.shields.io/badge/Version-1.2-brightgreen.svg)  ![](https://img.shields.io/badge/license-GPL3.0-blue.svg)
+# Python3-Botnet ![](https://img.shields.io/badge/Version-2.0-brightgreen.svg)  ![](https://img.shields.io/badge/license-GPL3.0-blue.svg)
 **Use Python3 to build a botnet (include bot and c&amp;c)**
+
+**Xor encode traffic**
 
 Build up a easy P2P botnet with python3.
 
@@ -11,8 +13,10 @@ I will upload xor version and new tut video as fast as i can :)
 
 **TCP Keep-Alive Connection**
 
-**Simple C&C**
+**Simple CNC**
+**Xor encode traffic**
 ## Bot Features
+**Xor encode traffic**
 
 **Three attack mode**
 
