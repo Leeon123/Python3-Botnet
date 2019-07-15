@@ -13,8 +13,7 @@ I will upload xor version and new tut video as fast as i can :)
 
 **TCP Keep-Alive Connection**
 
-**Simple CNC**
-**Xor encode traffic**
+**Simple CNC** with **Xor encode traffic**
 ## Bot Features
 **Xor encode traffic**
 
