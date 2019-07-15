@@ -16,7 +16,9 @@ I will upload xor version and new tut video as fast as i can :)
 
 **Three attack mode**
 
-*-Http-flood -TCP Connection FLood -UDP Flood*
+- [x] Http-flood 
+- [x] TCP Connection FLood 
+- [x] UDP Flood
 
 **Keep-Alive connection**
 ## Requirement
