@@ -1,4 +1,7 @@
 # Python3-Botnet ![](https://img.shields.io/badge/Version-2.1-brightgreen.svg)  ![](https://img.shields.io/badge/license-GPL3.0-blue.svg)
+
+**Project moved to [here](https://github.com/Leeon123/Aoyama)**
+
 **Use Python3 to build a botnet (include bot and c&amp;c)**
 
 **Xor encode traffic**
